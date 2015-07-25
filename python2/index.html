@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Lecture05 - Python</title>
+
+		<meta name="description" content="NTUgEEk Lecture05 - Python">
+		<meta name="author" content="NTUgEEk">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="../reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../reveal.js/css/theme/serif.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+    <link rel="stylesheet" href="style.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal.js/css/print/pdf.css' : '../reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+        <section>
+          <section>
+            <h3>Some useful object</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+a = (1, 2, 3)
+b = [1, 2, 3]
+c = {1: 'one', 2: 'two'}
+            </code></pre>
+            <pre><code class="javascript" data-trim>
+b = [1, 2, 3]
+c = {1: 'one', 2: 'two'}
+            </code></pre>
+            </div>
+          </section>
+
+
+          <section>
+            <h3>Variable scope</h3>
+            <pre><code class="javascript" style="font-size: 16px; 
+            line-height: 18px;" data-trim>
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 37) {
+      console.log('left');
+    }
+    else if(event.keyCode == 39) {
+      console.log('right');
+    }
+    else if(event.keyCode == 38) {
+      console.log('up');
+    }
+    else if(event.keyCode == 40) {  
+      console.log('down');
+    }                               
+});
+
+document.addEventListener('keyup', function(event) {
+    if(event.keyCode == 37) {
+      console.log('left is up');           
+    }
+    else if(event.keyCode == 39) {         
+      console.log('right is up');
+    }
+    else if(event.keyCode == 38) {  
+      console.log('up is up');
+    }
+    else if(event.keyCode == 40) { 
+      console.log('down is up');
+    }                               
+});
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Variable scope</h3>
+            <pre><code class="javascript" style="font-size: 16px; 
+            line-height: 18px;" data-trim>
+keyMap = {
+  37: 'left',
+  38: 'up',
+  39: 'right',
+  40: 'down',
+}
+document.addEventListener('keydown', function(event) {
+  if(keyMap[event.keyCode]) {
+    console.log(keyMap[event.keyCode]);
+  }
+});
+
+document.addEventListener('keyup', function(event) {
+  if(keyMap[event.keyCode]) {
+    console.log(keyMap[event.keyCode] + ' is up');
+  }
+});
+
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>JSON</h3>
+            <pre><code class="javascript" data-trim>
+{
+  name: 'zzz',
+  phones: ['1234567', '234567'],
+  friends: [
+    {
+      id: '12345',
+      name: '??',
+    },
+    {
+      id: 'abcde',
+      name: '!!',
+    }
+  ]
+}
+            </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h3>Scoping</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+def adder(_a):
+  a = _a
+  def fun(b):
+    return a + b
+  return fun
+
+x = adder(2)
+y = adder(3)
+x(2), y(3) # 4, 6
+            </code></pre>
+            <pre><code class="javascript" data-trim>
+function adder(_a) {
+  a = _a;
+  fun = function(b) {
+    return a + b;
+  }
+  return fun;
+}
+
+x = adder(2);
+y = adder(3);
+[x(2), y(3)]; // 4, 6
+            </code></pre>
+            </div>
+          </section>
+
+
+          <section>
+            <h3>Variable scope</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+a = 0
+def haha():
+  a += 1 # Error
+  global a
+  a += 1 # Ok
+
+haha()
+            </code></pre>
+            <pre><code class="javascript" data-trim>
+a = 0;
+function haha() {
+  a += 1; # a = 1
+  b = 3;
+  var c = 4;
+}
+
+haha() # a = 1, b = 3, c = undefine
+            </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h3>Scoping Bug</h3>
+            <div class="split-2">
+            <pre><code class="javascript" data-trim>
+for(var i = 1; i < 5; i++) {
+  button[i].click = function() {
+    console.log(i)
+  }
+}
+button[2].click() 
+// console will log 4
+            </code></pre>
+            <pre><code class="javascript" data-trim>
+for(var i = 1; i < 5; i++) {
+  (function(j){
+    button[j].click = function() {
+      console.log(j)
+    }
+  })(i)
+}
+button[2].click() 
+// console will log 2
+            </code></pre>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Javascript multiple file</h3>
+            <pre><code class="html" data-trim>
+<script src="a.js"></script>
+<script src="b.js"></script>
+<script src="c.js"></script>
+            </code></pre>
+          </section>
+
+
+          <section>
+            <h3>Python</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+# ./file1.py
+def f(): pass
+# mydir/file2.py
+def g(): pass
+            </code></pre>
+            <pre><code class="python" data-trim>
+# ./main.py
+import file1.f
+file1.f()
+from mydir.file2 import g
+g()
+            </code></pre>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Generator</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+def counter(a):
+  while True:
+    yield a
+    a += 1
+
+z = counter(2)
+next(z) # 2
+next(z) # 3
+next(z) # 4
+            </code></pre>
+            <pre><code class="python" data-trim>
+def counter(a):
+  while True:
+    yield a
+    a += 1
+
+z = counter(2)
+z.send(None) # 2
+z.send(None) # 3
+z.send(None) # 4
+            </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h3>Generator</h3>
+            <pre><code class="python" data-trim>
+def counter(a):
+  while True:
+    b = yield a
+    a += b
+
+z = counter(2)
+next(None) # 2
+next(3) # 5
+next(-2) # 3
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Generator</h3>
+            <pre><code class="python" data-trim>
+def counter(a):
+  while a < 5:
+    yield a
+    a += 1
+
+z = counter(2)
+for a in z:
+  print(a)
+# 2
+# 3
+# 4
+# 5
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Generator</h3>
+            <code class="python" data-trim> yield from x </code> <br>
+            <b>差不多</b>等於 <code class="python" data-trim> for y in x: yield y </code> <br>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Decorator</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+def print_result(fun):
+  def ret(*args, **kwargs):
+    result = fun(*args, **kwargs)
+    print(result)
+    return result
+  return ret
+  
+def return_1():
+  return 1
+
+return_1 = print_result(return_1)
+return_1() # print 1 and return 1
+            </code></pre>
+            <pre><code class="python" data-trim>
+def print_result(fun):
+  def ret(*args, **kwargs):
+    result = fun(*args, **kwargs)
+    print(result)
+    return result
+  return ret
+  
+@print_result
+def return_1():
+  return 1
+
+return_1() # print 1 and return 1
+            </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h3>Decorator</h3>
+            <pre><code class="python" data-trim>
+def memorize(fun):
+  mp = {}
+  def ret(*args):
+    if args in mp: return mp[args]
+    result = fun(*args)
+    mp[args] = result
+    return result
+  return ret
+  
+@memorize
+def fib(a):
+  if a <= 1: return 0
+  return fib(a-1) + fib(a-2)
+            </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h3>Asyncio</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+def print_string(a):
+  while True:
+    print(a) 
+    yield
+            </code></pre>
+            <pre><code class="python" data-trim>
+coros = [print_string('1'),
+print_string('2')]
+
+while True:
+  for c in coros: next(c)
+# 1 2 1 2 1 2 ...
+            </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h3>Asyncio</h3>
+            <div class="split-2">
+            <pre><code class="python" data-trim>
+@asyncio.coroutine
+def print_string(a):
+  while True:
+    print(a) 
+    yield
+            </code></pre>
+            <pre><code class="python" data-trim>
+loop = asyncio.get_event_loop()
+loop.create_task(print_string(1))
+loop.create_task(print_string(2))
+loop.run_forever()
+# 1 2 1 2 
+            </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h3>Asyncio</h3>
+            <pre><code class="python" data-trim>
+def sleep(a):
+  yield from asyncio.sleep(1)
+  print('done')
+            </code></pre>
+          </section>
+        </section>
+
+
+      </div> 
+
+		</div>
+
+		<script src="../reveal.js/lib/js/head.min.js"></script>
+		<script src="../reveal.js/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../reveal.js/plugin/zoom-js/zoom.js', async: true },
+					{ src: '../reveal.js/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
+
